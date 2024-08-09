@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Burn Calculator</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #00796b;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #00796b;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #bdbdbd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #00796b;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #004d40;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #00796b;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Calorie Burn Calculator</h1>
+        <form id="calorie-form">
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" min="1" required>
+            
+            <label for="duration">Duration (minutes):</label>
+            <input type="number" id="duration" min="1" required>
+            
+            <label for="activity">Activity:</label>
+            <select id="activity" required>
+                <option value="running">Running</option>
+                <option value="cycling">Cycling</option>
+                <option value="swimming">Swimming</option>
+                <option value="walking">Walking</option>
+                <option value="yoga">Yoga</option>
+                <option value="dancing">Dancing</option>
+                <option value="weightlifting">Weightlifting</option>
+            </select>
+            
+            <button type="button" onclick="calculateCalories()">Calculate</button>
+        </form>
+        <div id="result"></div>
+        <div id="error-message" class="error"></div>
+    </div>
+    <script>
+        function calculateCalories() {
+            const weightInput = document.getElementById('weight');
+            const durationInput = document.getElementById('duration');
+            const activityInput = document.getElementById('activity');
+            const resultDiv = document.getElementById('result');
+            const errorMessageDiv = document.getElementById('error-message');
+            
+            const weight = parseFloat(weightInput.value);
+            const duration = parseFloat(durationInput.value);
+            const activity = activityInput.value;
+
+            if (isNaN(weight) || isNaN(duration) || weight <= 0 || duration <= 0) {
+                errorMessageDiv.innerText = 'Please enter valid positive numbers for weight and duration.';
+                resultDiv.innerText = '';
+                return;
+            }
+
+            let caloriesBurnedPerMinute;
+
+            switch (activity) {
+                case 'running':
+                    caloriesBurnedPerMinute = 0.0175 * 10 * weight;
+                    break;
+                case 'cycling':
+                    caloriesBurnedPerMinute = 0.0175 * 8 * weight;
+                    break;
+                case 'swimming':
+                    caloriesBurnedPerMinute = 0.0175 * 7 * weight;
+                    break;
+                case 'walking':
+                    caloriesBurnedPerMinute = 0.0175 * 3.5 * weight;
+                    break;
+                case 'yoga':
+                    caloriesBurnedPerMinute = 0.0175 * 3 * weight;
+                    break;
+                case 'dancing':
+                    caloriesBurnedPerMinute = 0.0175 * 5 * weight;
+                    break;
+                case 'weightlifting':
+                    caloriesBurnedPerMinute = 0.0175 * 6 * weight;
+                    break;
+                default:
+                    caloriesBurnedPerMinute = 0;
+                    break;
+            }
+
+            const totalCaloriesBurned = caloriesBurnedPerMinute * duration;
+            resultDiv.innerText = `You burned approximately ${totalCaloriesBurned.toFixed(2)} calories.`;
+            errorMessageDiv.innerText = '';
+        }
+    </script>
+</body>
+</html>
